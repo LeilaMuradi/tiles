@@ -43,7 +43,7 @@ class Tile(pg.sprite.Sprite):
     long_tile_pressed = pg.transform.scale(long_tile_pressed, (SIZE[0] // 4, SIZE[1] // 2.2))
 
     def __init__(self, long=False):
-        print('плитка')
+
         '''
         Класс плитки может создавать их двух разных размеров: короткие и длинные.
         Если нужно создать длинную плитку, параметр long должен иметь значение True. По умолчанию плитки короткие.
@@ -88,8 +88,7 @@ class Tile(pg.sprite.Sprite):
             if self.rect.collidepoint(mouse_pos):
                 self.press()
 
-        if self.rect.y >= SIZE[1]:
-            self.kill()
+
 
     def press(self):
         # нота плитки проигрывается если
@@ -138,7 +137,7 @@ class Song:
 
 screen = pg.display.set_mode(SIZE)
 
-fps = 500
+fps = 250
 clock = pg.time.Clock()
 
 next_note = 0  # номер ноты, которую нужно сыграть следующей
@@ -155,7 +154,7 @@ def play_note():
     if next_note > 0:
         sound.fadeout(1000)
 
-    sound = pg.mixer.Sound('Sounds/' + playing_song.notes[next_note] + 'ogg')
+    sound = pg.mixer.Sound('Sounds/' + playing_song.notes[next_note] + '.ogg')
     sound.play()
     next_note +=1
 
@@ -192,7 +191,7 @@ while True:
 
         mouse_pos = pg.mouse.get_pos()
         # место для отрисовки меню
-        screen.blit(background_menu, (0,0))
+
         for song in Song.songs:
             if song.rect.collidepoint(mouse_pos):
                 song.color = 'green'
@@ -209,7 +208,7 @@ while True:
                 if song.rect.collidepoint(mouse_pos):
                     playing_song = song
                     mode = 'play'
-
+        screen.blit(background_menu, (0, 0))
 
         y =1
         for song in Song.songs:
@@ -221,17 +220,17 @@ while True:
         if is_play:
             if created_notes < len(playing_song.notes) and (time.time() - timer >= playing_song.interval * playing_song.duration[created_notes]):
                 # только если сейчас идёт игра - нет проигрыша или победы
-                print('1')
+
                 if playing_song.duration[created_notes] == 1:
                     screen_notes.add(Tile())
-                    print('2')
+
                 else:
                     screen_notes.add(Tile(long=True))
-                    print('3')
+
 
                 timer = time.time()
                 created_notes +=1
-                screen_notes.update()
+            screen_notes.update()
 
         screen.fill(pg.Color("white"))
 
@@ -258,7 +257,7 @@ while True:
             if note.rect.y > 500 and not note.played:
                 text = f1.render('ПРОИГРЫШ', True, 'red')
                 text_rect = text.get_rect(center=(SIZE[0]//2, SIZE[1]//2))
-                screen.blits(text, text_rect)
+                screen.blit(text, text_rect)
                 is_play = False
 
     pg.display.flip()
